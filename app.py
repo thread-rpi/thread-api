@@ -8,6 +8,7 @@ import certifi
 from flask_swagger_ui import get_swaggerui_blueprint
 from admin_routes.get_me import get_me
 from admin_routes.get_events import get_admin_events
+from admin_routes.get_images import get_admin_images
 from event_routes.get_event import get_event
 from member_routes.get_members import get_members
 from event_routes.get_semester import get_semester
@@ -139,10 +140,16 @@ def refresh():
 def get_me_route():
     return get_me(member)
 
+# Admin routes (jwt required)
 @app.route("/admin/events", methods=["GET"])
 @jwt_required()
 def get_admin_events_route():
     return get_admin_events(events)
+
+@app.route("/admin/images", methods=["GET"])
+@jwt_required()
+def get_admin_images_route():
+    return get_admin_images(images)
 
 # Events (events collection)
 @app.route("/events/<event_id>", methods=["GET"])

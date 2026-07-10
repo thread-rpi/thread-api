@@ -144,6 +144,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
+<<<<<<< HEAD
   /admin/events:
     get:
       tags: [Admin]
@@ -157,6 +158,21 @@ paths:
 
         Each event is serialized with an `id` field (string) instead of `_id`.
       operationId: getAdminEvents
+=======
+  /admin/images:
+    get:
+      tags: [Admin]
+      summary: List and filter all images (admin)
+      description: |
+        Returns a paginated list of image documents from the images collection.
+        Requires a valid JWT access token from an authorized admin.
+
+        Query filters are combined with AND logic. By default, soft-deleted images
+        (`deleted_at` set) are excluded unless `include_deleted=true`.
+
+        Each image is serialized with an `id` field (string) instead of `_id`.
+      operationId: getAdminImages
+>>>>>>> feature/admin/images-route
       security:
         - bearerAuth: []
       parameters:
@@ -165,29 +181,50 @@ paths:
           schema:
             type: boolean
           description: Filter by published status.
+<<<<<<< HEAD
         - name: type
           in: query
           schema:
             type: string
           description: Filter by event type (e.g. shoot, internal, external).
+=======
+        - name: event_id
+          in: query
+          schema:
+            type: string
+            pattern: "^[0-9a-fA-F]{24}$"
+          description: Filter by parent event ObjectId.
+>>>>>>> feature/admin/images-route
         - name: date_from
           in: query
           schema:
             type: string
             format: date-time
+<<<<<<< HEAD
           description: Include events on or after this ISO 8601 datetime.
+=======
+          description: Include images on or after this ISO 8601 datetime.
+>>>>>>> feature/admin/images-route
         - name: date_to
           in: query
           schema:
             type: string
             format: date-time
+<<<<<<< HEAD
           description: Include events on or before this ISO 8601 datetime.
+=======
+          description: Include images on or before this ISO 8601 datetime.
+>>>>>>> feature/admin/images-route
         - name: include_deleted
           in: query
           schema:
             type: boolean
             default: false
+<<<<<<< HEAD
           description: When true, include soft-deleted events.
+=======
+          description: When true, include soft-deleted images.
+>>>>>>> feature/admin/images-route
         - name: limit
           in: query
           schema:
@@ -211,11 +248,19 @@ paths:
           description: Sort field; prefix with `-` for descending (default `-date`).
       responses:
         "200":
+<<<<<<< HEAD
           description: Paginated events list
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/GetAdminEventsSuccessResponse"
+=======
+          description: Paginated images list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetAdminImagesSuccessResponse"
+>>>>>>> feature/admin/images-route
         "400":
           description: Invalid query parameter
           content:
@@ -850,18 +895,31 @@ components:
             $ref: "#/components/schemas/MemberListItem"
       required: [data]
 
+<<<<<<< HEAD
     GetAdminEventsSuccessResponse:
+=======
+    GetAdminImagesSuccessResponse:
+>>>>>>> feature/admin/images-route
       type: object
       required: [data]
       properties:
         data:
           type: object
+<<<<<<< HEAD
           required: [events, total, limit, skip]
           properties:
             events:
               type: array
               items:
                 $ref: "#/components/schemas/Event"
+=======
+          required: [images, total, limit, skip]
+          properties:
+            images:
+              type: array
+              items:
+                $ref: "#/components/schemas/Image"
+>>>>>>> feature/admin/images-route
             total:
               type: integer
               description: Total matching documents for the current query.
