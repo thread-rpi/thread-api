@@ -9,6 +9,7 @@ from flask_swagger_ui import get_swaggerui_blueprint
 from admin_routes.get_me import get_me
 from admin_routes.get_events import get_admin_events
 from admin_routes.get_images import get_admin_images
+from admin_routes.get_members import get_admin_members
 from event_routes.get_event import get_event
 from member_routes.get_members import get_members
 from event_routes.get_semester import get_semester
@@ -150,6 +151,11 @@ def get_admin_events_route():
 @jwt_required()
 def get_admin_images_route():
     return get_admin_images(images)
+
+@app.route("/admin/members", methods=["GET"])
+@jwt_required()
+def get_admin_members_route():
+    return get_admin_members(member)
 
 # Events (events collection)
 @app.route("/events/<event_id>", methods=["GET"])
