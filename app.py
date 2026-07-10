@@ -7,6 +7,7 @@ from flask_cors import CORS
 import certifi
 from flask_swagger_ui import get_swaggerui_blueprint
 from admin_routes.get_me import get_me
+from admin_routes.get_events import get_admin_events
 from event_routes.get_event import get_event
 from member_routes.get_members import get_members
 from event_routes.get_semester import get_semester
@@ -137,6 +138,11 @@ def refresh():
 @jwt_required()
 def get_me_route():
     return get_me(member)
+
+@app.route("/admin/events", methods=["GET"])
+@jwt_required()
+def get_admin_events_route():
+    return get_admin_events(events)
 
 # Events (events collection)
 @app.route("/events/<event_id>", methods=["GET"])
