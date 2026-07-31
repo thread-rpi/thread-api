@@ -50,7 +50,12 @@ images = imageDB['images']
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_KEY")
 jwt = JWTManager(app)
 
-CORS(app, origins=["http://localhost:5173", "https://needle-ui.vercel.app"], allow_headers=['Content-Type', 'Authorization'])
+CORS(
+    app,
+    origins=["http://localhost:5173", "https://needle-ui.vercel.app"],
+    allow_headers=['Content-Type', 'Authorization'],
+    allow_private_network=True,
+)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PUBLIC_OPENAPI_FILE = "docs/openapi.yaml"
@@ -189,4 +194,5 @@ def get_members_route(year):
     return get_members(member, year)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Port 5000 is claimed by macOS AirPlay / Control Center (returns 403).
+    app.run(debug=True, host="127.0.0.1", port=8000)
