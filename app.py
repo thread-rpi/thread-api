@@ -194,5 +194,4 @@ def get_members_route(year):
     return get_members(member, year)
 
 if __name__ == "__main__":
-    # Port 5000 is claimed by macOS AirPlay / Control Center (returns 403).
     app.run(debug=True, host="127.0.0.1", port=8000)
