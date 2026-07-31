@@ -7,6 +7,9 @@ from flask_cors import CORS
 import certifi
 from flask_swagger_ui import get_swaggerui_blueprint
 from admin_routes.get_me import get_me
+from admin_routes.get_events import get_admin_events
+from admin_routes.get_images import get_admin_images
+from admin_routes.get_members import get_admin_members
 from event_routes.get_event import get_event
 from member_routes.get_members import get_members
 from event_routes.get_semester import get_semester
@@ -47,7 +50,12 @@ images = imageDB['images']
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_KEY")
 jwt = JWTManager(app)
 
-CORS(app, origins=["http://localhost:5173", "https://needle-ui.vercel.app"], allow_headers=['Content-Type', 'Authorization'])
+CORS(
+    app,
+    origins=["http://localhost:5173", "https://needle-ui.vercel.app"],
+    allow_headers=['Content-Type', 'Authorization'],
+    allow_private_network=True,
+)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PUBLIC_OPENAPI_FILE = "docs/openapi.yaml"
@@ -138,6 +146,22 @@ def refresh():
 def get_me_route():
     return get_me(member)
 
+# Admin routes (jwt required)
+@app.route("/admin/events", methods=["GET"])
+@jwt_required()
+def get_admin_events_route():
+    return get_admin_events(events)
+
+@app.route("/admin/images", methods=["GET"])
+@jwt_required()
+def get_admin_images_route():
+    return get_admin_images(images)
+
+@app.route("/admin/members", methods=["GET"])
+@jwt_required()
+def get_admin_members_route():
+    return get_admin_members(member)
+
 # Events (events collection)
 @app.route("/events/<event_id>", methods=["GET"])
 def get_event_route(event_id):
@@ -170,4 +194,4 @@ def get_members_route(year):
     return get_members(member, year)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="127.0.0.1", port=8000)
